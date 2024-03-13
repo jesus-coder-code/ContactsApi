@@ -4,9 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ContactsApi.Models;
+using ContactsApi.Interfaces;
+using System.Data.Entity;
+using ContactsApi.Respositories;
 using Microsoft.EntityFrameworkCore;
 using ContactsApi.Context;
-using ContactsApi.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ContactsApi.Controllers
 {
@@ -15,9 +19,10 @@ namespace ContactsApi.Controllers
     public class ContactsController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public ContactsController(AppDbContext context)
+        private readonly IContactRepository _contactRepository;
+        public ContactsController(AppDbContext context,IContactRepository contactRepository)
         {
+            _contactRepository = contactRepository;
             _context = context;
         }
 
@@ -25,18 +30,18 @@ namespace ContactsApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
-            return await _context.Contacts.ToListAsync();
+            return await _contactRepository.GetAll();
         }
 
         // GET: api/Contacts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Contact>> GetContact(int id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
+            var contact = await _contactRepository.GetById(id);
 
             if (contact == null)
             {
-                return NotFound();
+                return NotFound(new {message = "contact not found"});
             }
 
             return contact;
@@ -47,23 +52,16 @@ namespace ContactsApi.Controllers
         [HttpPut]
         public async Task<IActionResult> PutContact(int id, Contact contact)
         {
-            /*if (id != contact.Id)
-            {
-                return BadRequest();
-            }*/
-
-            _context.Entry(contact).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-                return Ok();
+                await _contactRepository.Update(id, contact);
+                return Ok(new {message = "contact was updated"});
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!ContactExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new {message = "contact doesn't exist"});
                 }
                 else
                 {
@@ -77,9 +75,7 @@ namespace ContactsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Contact>> PostContact(Contact contact)
         {
-            _context.Contacts.Add(contact);
-            await _context.SaveChangesAsync();
-
+            await _contactRepository.Post(contact);
             return CreatedAtAction("GetContact", new { id = contact.Id }, contact);
         }
 
@@ -87,21 +83,27 @@ namespace ContactsApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(int id)
         {
-            var contact = await _context.Contacts.FindAsync(id);
-            if (contact == null)
+            try
             {
-                return NotFound();
+                var contact = await _contactRepository.Delete(id);
+                if (contact == null)
+                {
+                    return NotFound(new { message = "contact not found" });
+                }
+
+                return Ok(new { message = "contact was deleted" });
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
-            _context.Contacts.Remove(contact);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         private bool ContactExists(int id)
         {
             return _context.Contacts.Any(e => e.Id == id);
         }
+
     }
 }
