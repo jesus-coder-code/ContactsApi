@@ -11,6 +11,7 @@ using ContactsApi.Respositories;
 using Microsoft.EntityFrameworkCore;
 using ContactsApi.Context;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Data;
 
 namespace ContactsApi.Controllers
 {
@@ -54,8 +55,8 @@ namespace ContactsApi.Controllers
         {
             try
             {
-                await _contactRepository.Update(id, contact);
-                return Ok(new {message = "contact was updated"});
+                await _contactRepository.Update(id,contact);
+                return Ok(new {message = "contact was update"});
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -67,6 +68,7 @@ namespace ContactsApi.Controllers
                 {
                     throw;
                 }
+                //throw new Exception(ex.Message);
             }
         }
 
@@ -99,7 +101,7 @@ namespace ContactsApi.Controllers
             }
 
         }
-
+   
         private bool ContactExists(int id)
         {
             return _context.Contacts.Any(e => e.Id == id);
