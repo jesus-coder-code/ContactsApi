@@ -1,6 +1,7 @@
 ﻿using ContactsApi.Context;
 using ContactsApi.Interfaces;
 using ContactsApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContactsApi.Respositories
 {
@@ -12,14 +13,20 @@ namespace ContactsApi.Respositories
             _context = context;
         }
 
-        public Task<User> Post(User user)
+        public async Task<User> Post(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
         }
 
-        public Task<User> Update(int id, User user)
+        public async Task<User> Update(int id, User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return user;
         }
     }
 }

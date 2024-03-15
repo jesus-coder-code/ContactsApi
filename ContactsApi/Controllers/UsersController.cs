@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ContactsApi.Context;
 using ContactsApi.Models;
+using ContactsApi.Interfaces;
+using ContactsApi.Respositories;
 
 namespace ContactsApi.Controllers
 {
@@ -15,10 +17,12 @@ namespace ContactsApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UsersController(AppDbContext context)
+        public UsersController(AppDbContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
         // PUT: api/Users/5
@@ -26,30 +30,23 @@ namespace ContactsApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _userRepository.Update(id, user);
+                return Ok(new { message = "user was update" });
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!UserExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "user doesn't exist" });
                 }
                 else
                 {
                     throw;
                 }
+                //throw new Exception(ex.Message);
             }
-
-            return NoContent();
         }
 
         // POST: api/Users
@@ -57,9 +54,7 @@ namespace ContactsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
+            await _userRepository.Post(user);
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
