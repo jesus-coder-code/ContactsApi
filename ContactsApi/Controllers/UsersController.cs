@@ -54,8 +54,14 @@ namespace ContactsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            await _userRepository.Post(user);
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+
+            var create = await _userRepository.Post(user);
+            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            if (create != null)
+            {
+                return Ok(new { message = "user was created" });
+            }
+            return BadRequest();
         }
 
         // DELETE: api/Users/5

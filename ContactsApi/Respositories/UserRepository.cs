@@ -2,6 +2,7 @@
 using ContactsApi.Interfaces;
 using ContactsApi.Models;
 using Microsoft.EntityFrameworkCore;
+using ContactsApi.Infrastructure.Hash;
 
 namespace ContactsApi.Respositories
 {
@@ -15,7 +16,9 @@ namespace ContactsApi.Respositories
 
         public async Task<User> Post(User user)
         {
-            //throw new NotImplementedException();
+            string hashedPassword  = Hasher.HashPassword(user.Password);
+            user.Password = hashedPassword;
+            
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;

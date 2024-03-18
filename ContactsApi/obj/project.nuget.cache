@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "DT3sLGk6CcjmUVpgLzvQ/AyPPPaHinJNrLFDk7kWRoHnf1ng989s+G0o/irx0AizfkxEsRfqcFDRCMEaxGFH7w==",
+  "dgSpecHash": "o8whVIHrbd68xXTBgg3iJZTiKc0ObW8f8x5pmT7c2L4fYE5NKk5d0/5xO7jDkgO0SGgK2ST6Khqyw8EKrNOshA==",
   "success": true,
   "projectFilePath": "C:\\Users\\jesus\\OneDrive\\Documentos\\CSharpProjects\\ContactsApi\\ContactsApi\\ContactsApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jesus\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\jesus\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\jesus\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\jesus\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\jesus\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\jesus\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

@@ -36,7 +36,7 @@ namespace ContactsApi.Controllers
 
         // GET: api/Contacts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Contact>> GetContact(int id)
+        public async Task<ActionResult<IEnumerable<Contact>>> GetContact(int id)
         {
             var contact = await _contactRepository.GetById(id);
 

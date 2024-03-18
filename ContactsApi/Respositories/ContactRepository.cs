@@ -33,10 +33,15 @@ namespace ContactsApi.Respositories
             return await _context.Contacts.ToListAsync();
         }
 
-        public async Task<Contact> GetById(int id)
+        public async Task<List<Contact>> GetById(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
-            return contact;
+            List<Contact> result = new List<Contact>();
+            if (contact != null)
+            {
+                result.Add(contact);
+            }
+            return result;
         }
 
         public async Task<Contact> Post(Contact contact)

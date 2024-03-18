@@ -1,9 +1,15 @@
-﻿namespace ContactsApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ContactsApi.Models
 {
     public class User
     {
         public int Id { get; set; }
-        public required string Username { get; set; }
-        public required string Password { get; set; }
+
+        [Required(ErrorMessage = "se necesita el nombre de usuario")]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "proporcione una contraseña")]
+        public string Password { get; set; }
     }
 }
