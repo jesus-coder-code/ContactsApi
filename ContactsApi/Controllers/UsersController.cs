@@ -25,6 +25,13 @@ namespace ContactsApi.Controllers
             _userRepository = userRepository;
         }
 
+        // GET: api/Contacts
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetContacts()
+        {
+            return await _userRepository.GetAll();
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

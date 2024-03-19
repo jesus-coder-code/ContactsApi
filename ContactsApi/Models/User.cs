@@ -11,5 +11,7 @@ namespace ContactsApi.Models
 
         [Required(ErrorMessage = "proporcione una contraseña")]
         public string Password { get; set; }
+
+        public ICollection<Contact>? Contacts { get; set;}
     }
 }

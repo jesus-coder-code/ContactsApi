@@ -12,5 +12,15 @@ namespace ContactsApi.Context
 
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<User> Users { get; set; }
+
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Contact>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.Contacts)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+        }*/
+
     }
 }

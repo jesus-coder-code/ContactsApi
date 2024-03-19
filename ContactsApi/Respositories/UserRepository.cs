@@ -14,6 +14,12 @@ namespace ContactsApi.Respositories
             _context = context;
         }
 
+        public async Task<List<User>> GetAll()
+        {
+            //return await _context.Users.ToListAsync();
+            return await _context.Users.Include(u => u.Contacts).ToListAsync();
+        }
+
         public async Task<User> Post(User user)
         {
             string hashedPassword  = Hasher.HashPassword(user.Password);
