@@ -25,11 +25,24 @@ namespace ContactsApi.Controllers
             _userRepository = userRepository;
         }
 
-        // GET: api/Contacts
+        // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetContacts()
         {
             return await _userRepository.GetAll();
+        }
+
+        [HttpGet("GetByUserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<Contact>>> GetContactByUserId(int userId)
+        {
+            var contact = await _userRepository.GetByUserId(userId);
+
+            if (contact == null)
+            {
+                return NotFound(new { message = "no contacts founds" });
+            }
+
+            return contact;
         }
 
         // PUT: api/Users/5
